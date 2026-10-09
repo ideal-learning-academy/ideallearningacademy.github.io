@@ -77,5 +77,17 @@ This is the first dashboard layout. Database-connected features will be added in
 <footer>Ideal Learning Academy · School ERP</footer>
 </main>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://zekxeiizmpguemnaafdk.supabase.co";";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_W013PXK_skfUhi2emqbhtQ_GKxwJCZQ";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+ SUPABASE_PUBLISHABLE_KEY
+);
+
+console.log("Supabase client initialized.");
+</script>
 </body>
 </html>
