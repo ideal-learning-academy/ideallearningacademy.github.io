@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ideal Learning Academy | ERP Dashboard</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#1d2939}
+header{background:#123b68;color:white;padding:22px}
+header h1{margin:0;font-size:24px}
+header p{margin:8px 0 0;color:#dce8f6}
+.layout{display:flex;min-height:calc(100vh - 95px)}
+nav{width:230px;background:#fff;padding:20px 12px;border-right:1px solid #e4e9f1}
+nav a{display:block;padding:13px 14px;margin-bottom:6px;color:#344054;text-decoration:none;border-radius:8px}
+nav a.active,nav a:hover{background:#e8f1fc;color:#174b82}
+main{padding:25px;width:100%;max-width:1200px;margin:auto}
+.welcome{margin-bottom:22px}
+.welcome h2{margin:0 0 8px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:white;padding:20px;border-radius:12px;border:1px solid #e5eaf2;box-shadow:0 3px 12px #152b4b08}
+.card .icon{font-size:24px}
+.card h3{font-size:15px;color:#667085;margin:12px 0}
+.card p{font-size:14px;color:#475467;margin:0}
+.section{margin-top:24px}
+.section h2{font-size:19px}
+.notice{background:white;border:1px solid #e5eaf2;padding:18px;border-radius:12px;line-height:1.7}
+footer{text-align:center;color:#667085;font-size:12px;padding:24px}
+@media(max-width:700px){
+.layout{display:block}
+nav{width:100%;display:flex;overflow-x:auto;padding:10px}
+nav a{white-space:nowrap;margin:0 4px}
+main{padding:16px}
+.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.card{padding:14px}
+header h1{font-size:20px}
+}
+@media(max-width:400px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>Ideal Learning Academy</h1>
+<p>School ERP · Administration Dashboard</p>
+</header>
+<div class="layout">
+<nav aria-label="ERP navigation">
+<a class="active" href="#dashboard">🏠 Dashboard</a>
+<a href="#students">🎓 Students</a>
+<a href="#teachers">👩‍🏫 Teachers</a>
+<a href="#attendance">📋 Attendance</a>
+<a href="#fees">💳 Fees</a>
+<a href="#exams">📝 Examinations</a>
+<a href="#reports">📊 Report Cards</a>
+<a href="#notices">📢 Notices</a>
+</nav>
+<main id="dashboard">
+<div class="welcome">
+<h2>Welcome, Administrator</h2>
+<p>Manage your school's daily activities from one place.</p>
+</div>
+<div class="cards">
+<div class="card" id="students"><div class="icon">🎓</div><h3>Student Management</h3><p>Student records and admissions</p></div>
+<div class="card" id="teachers"><div class="icon">👩‍🏫</div><h3>Teacher Management</h3><p>Teachers and assignments</p></div>
+<div class="card" id="attendance"><div class="icon">📋</div><h3>Attendance</h3><p>Daily student attendance</p></div>
+<div class="card" id="fees"><div class="icon">💳</div><h3>Fees Management</h3><p>Fee records and payments</p></div>
+<div class="card" id="exams"><div class="icon">📝</div><h3>Examinations</h3><p>Exams and marks entry</p></div>
+<div class="card" id="reports"><div class="icon">📊</div><h3>Report Cards</h3><p>Progress reports and marksheets</p></div>
+</div>
+<div class="section" id="notices">
+<h2>School Notices</h2>
+<div class="notice">
+<strong>Welcome to the ERP dashboard</strong><br>
+This is the first dashboard layout. Database-connected features will be added in later steps.
+</div>
+</div>
+<footer>Ideal Learning Academy · School ERP</footer>
+</main>
+</div>
+</body>
+</html>
