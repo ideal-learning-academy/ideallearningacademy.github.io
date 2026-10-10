@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Admit Card - Admission Test</title>
+  <!-- Library to read Google Sheet CSV easily -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; padding: 20px; }
+    .search-box { max-width: 450px; margin: 40px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .search-box h3 { margin-top: 0; text-align: center; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .btn { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+    .btn:hover { background: #0056b3; }
+    .error { color: red; margin-top: 10px; text-align: center; }
+
+    /* Admit Card Display Styling */
+    #admitCardContainer { display: none; }
+    .admit-card { max-width: 700px; margin: 20px auto; background: #fff; border: 2px solid #222; padding: 25px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .card-header { text-align: center; border-bottom: 2px solid #222; padding-bottom: 10px; }
+    .card-header h2 { margin: 0; text-transform: uppercase; font-size: 20px; }
+    .card-header p { margin: 5px 0 0; color: #555; font-weight: bold; }
+    .details-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .details-table td { padding: 10px; border: 1px solid #ddd; }
+    .details-table td.label { font-weight: bold; background: #f9f9f9; width: 35%; }
+    .instructions { margin-top: 20px; font-size: 13px; border-top: 1px solid #ccc; padding-top: 10px; }
+    .footer { margin-top: 40px; display: flex; justify-content: space-between; }
+    .sig { border-top: 1px solid #333; width: 180px; text-align: center; padding-top: 5px; font-size: 12px; }
+
+    @media print {
+      body { background: white; margin: 0; }
+      .search-box, .no-print { display: none !important; }
+      #admitCardContainer { display: block !important; }
+      .admit-card { border: 1px solid #000; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Search Section -->
+  <div class="search-box" id="searchBox">
+    <h3>Download Admit Card</h3>
+    <div class="form-group">
+      <label for="appInput">Enter Your Application Number:</label>
+      <input type="text" id="appInput" placeholder="e.g. APP-001">
+    </div>
+    <button class="btn" onclick="searchStudent()">View Admit Card</button>
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+  <!-- Admit Card Print Layout -->
+  <div id="admitCardContainer">
+    <div class="admit-card">
+      <div class="card-header">
+        <h2>Admission Test 2026</h2>
+        <p>OFFICIAL ADMIT CARD</p>
+      </div>
+
+      <table class="details-table">
+        <tr><td class="label">Application Number:</td><td><strong id="cardAppNo"></strong></td></tr>
+        <tr><td class="label">Candidate Name:</td><td id="cardName"></td></tr>
+        <tr><td class="label">Email Address:</td><td id="cardEmail"></td></tr>
+        <tr><td class="label">Course / Program:</td><td id="cardCourse"></td></tr>
+        <tr><td class="label">Exam Date & Time:</td><td>October 25, 2026 | 10:00 AM</td></tr>
+        <tr><td class="label">Exam Center:</td><td>Main Campus, Hall A</td></tr>
+      </table>
+
+      <div class="instructions">
+        <h4>Important Instructions:</h4>
+        <ol>
+          <li>Bring a printed copy of this admit card along with a valid photo ID.</li>
+          <li>Report to the exam center at least 30 minutes before test timing.</li>
+          <li>Electronic devices are strictly prohibited.</li>
+        </ol>
+      </div>
+
+      <div class="footer">
+        <div class="sig">Candidate's Signature</div>
+        <div class="sig">Controller of Exams</div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;" class="no-print">
+      <button class="btn" style="width: 200px;" onclick="window.print()">Print / Save PDF</button>
+      <button class="btn" style="width: 200px; background: #6c757d; margin-left: 10px;" onclick="location.reload()">Search Another</button>
+    </div>
+  </div>
+
+  <script>
+    // 👇 PASTE YOUR PUBLISHED GOOGLE SHEET CSV LINK INSIDE THE QUOTES BELOW 👇
+    const CSV_URL = 'YOUR_PUBLISHED_CSV_URL_HERE';
+
+    function searchStudent() {
+      const appInput = document.getElementById('appInput').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.innerText = '';
+
+      if (!appInput) {
+        errorMsg.innerText = 'Please enter your application number.';
+        return;
+      }
+
+      Papa.parse(CSV_URL, {
+        download: true,
+        header: true,
+        complete: function(results) {
+          const data = results.data;
+          
+          // Matches the Google Sheet 'Application Number' column with the input
+          const student = data.find(row => {
+            const appCol = row['Application Number'] || '';
+            return appCol.trim().toLowerCase() === appInput.toLowerCase();
+          });
+
+          if (student) {
+            // Map the Google Sheet columns to the admit card fields
+            document.getElementById('cardAppNo').innerText = student['Application Number'] || appInput;
+            document.getElementById('cardName').innerText = student['Full Name'] || student['Name'] || 'N/A';
+            document.getElementById('cardEmail').innerText = student['Email Address'] || student['Email'] || 'N/A';
+            document.getElementById('cardCourse').innerText = student['Course'] || student['Program'] || 'N/A';
+
+            // Hide search box and show admit card
+            document.getElementById('searchBox').style.display = 'none';
+            document.getElementById('admitCardContainer').style.display = 'block';
+          } else {
+            errorMsg.innerText = 'No candidate found with this Application Number. Please check and try again.';
+          }
+        },
+        error: function(err) {
+          errorMsg.innerText = 'Error fetching data. Make sure the Google Sheet link is published correctly as CSV.';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
